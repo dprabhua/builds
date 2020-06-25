@@ -3,12 +3,29 @@ pipeline {
 
   stages {
 
+  stage('Git checkout ') {
+  steps {
+    parallel(
+      Database: {
+        git 'https://github.com/abhishpj/DataBase.git'
+      },
+      Protocol : {
+        git 'https://github.com/abhishpj/Protocol.git'
+      },
+      UI : {
+        git 'https://github.com/abhishpj/UI.git'
+      }
+    )
+  }
+}
+
+
 stage('run-parallel-branches') {
   steps {
     parallel(
       Database: {
-        sh ''' git clone https://github.com/dprabhua/DataBase.git
-                cd DataBase
+        sh ''' 
+              cd DataBase
                 bash prcs.sh '''
 
       },
@@ -18,9 +35,7 @@ stage('run-parallel-branches') {
                 bash proc.sh '''
       },
       UI : {
-        sh ''' git clone https://github.com/abhishpj/UI.git
-               cd  UI
-                bash process.sh '''
+        bat label: 'abc', script: 'abc.bat'
       }
     )
   }
